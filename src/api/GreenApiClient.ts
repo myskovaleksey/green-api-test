@@ -44,10 +44,30 @@ export class GreenApiClient {
         return await this.client.post(`/sendMessage/${this.apiToken}`, payload);
     }
 
-    async getChatHistory(chatId: string, count: number = 10) {
-        return await this.client.post(`/getChatHistory/${this.apiToken}`, {
-            chatId: chatId.includes('@') ? chatId : `${chatId}@c.us`,
+    async getChatHistory(chatId: string | number, count: number = 100) {
+        // Приводим к строке, чтобы метод .includes не вызывал ошибку
+        const strChatId = String(chatId);
+    
+        // Проверяем: если это не числовой ID (не содержит только цифры) 
+        // и в нем нет @, тогда добавляем @c.us
+        let finalChatId = strChatId;
+        if (!strChatId.includes('@') && !/^\d+$/.test(strChatId)) {
+            finalChatId = `${strChatId}@c.us`;
+        }
+
+        const payload = {
+            chatId: finalChatId,
             count: count
-        });
+        };
+    
+        return await this.client.post(`/getChatHistory/${this.apiToken}`, payload);
+    }
+
+    async getSettings() {
+        return await this.client.get(`/getSettings/${this.apiToken}`);
+    }
+
+    async setSettings(settings: object) {
+        return await this.client.post(`/setSettings/${this.apiToken}`, settings);
     }
 }
