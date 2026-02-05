@@ -1,7 +1,7 @@
 import { GreenApiClient } from '../../api/GreenApiClient';
 
 const api = new GreenApiClient();
-const testChatId = process.env.CHAT_ID || '';
+const testChatId = process.env.RECIPIENT_PHONE || '';
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
     
 describe('Method: sendMessage', () => {
