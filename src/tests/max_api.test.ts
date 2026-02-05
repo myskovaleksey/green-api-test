@@ -49,6 +49,19 @@ describe('GREEN-API Integration Tests', () => {
             expect(response.status).toBe(200);
         });
 
+        test('Success: Send message with linkPreview:true but NO link in text (Status 200)', async () => {
+            const message = "It's just text without a link, but with a preview included.";
+    
+            const response = await api.sendMessage(testChatId, message, {
+                linkPreview: true
+            });
+
+            expect(response.status).toBe(200);
+            expect(response.data).toHaveProperty('idMessage');
+    
+            console.log('LinkPreview without link test passed with status 200');
+        });
+
         test('Success: Send message with invalid quotedMessageId (Status 200 per docs)', async () => {
                 const invalidQuotedId = "NON_EXISTENT_ID_12345";
     
@@ -85,6 +98,16 @@ describe('GREEN-API Integration Tests', () => {
             });
             expect(response.status).toBe(200);
         });
+
+        test('Negative: Send message to system chat (status@broadcast) - Expect 200 per docs', async () => {
+            const systemChatId = "status@broadcast";
+            const response = await api.sendMessage(systemChatId, "Test message via Max app check");
+
+            expect(response.status).toBe(400);
+    
+            console.log('System ID status@broadcast rejected with 400 as expected for Max');
+        });    
+
 
         test('Error: Message exceeds 20000 characters (Status 400)', async () => {
             const response = await api.sendMessage(testChatId, "A".repeat(20001));
