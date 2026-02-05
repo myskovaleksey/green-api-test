@@ -15,23 +15,20 @@ export class GreenApiClient {
         });
     }
 
-    // Method: checked auth
     async getStateInstance() {
         return await this.client.get(`/getStateInstance/${this.apiToken}`);
     }
 
-    // Method: send message
     async sendMessage(chatId: string, message: string) {
         return await this.client.post(`/sendMessage/${this.apiToken}`, {
-            chatId: `${chatId}@c.us`,
+            chatId: chatId.includes('@') ? chatId : `${chatId}@c.us`,
             message: message
         });
     }
 
-    // Method: get hysory
     async getChatHistory(chatId: string, count: number = 10) {
         return await this.client.post(`/getChatHistory/${this.apiToken}`, {
-            chatId: `${chatId}@c.us`,
+            chatId: chatId.includes('@') ? chatId : `${chatId}@c.us`,
             count: count
         });
     }
