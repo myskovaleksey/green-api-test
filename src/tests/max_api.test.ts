@@ -62,6 +62,30 @@ describe('GREEN-API Integration Tests', () => {
             console.log('Quoted ID test passed with status 200');
         });
 
+        //Время показа уведомления набора сообщения в чате собеседника.
+        //Время ограничено значениями от 1000 до 20000 миллисекунд (от 1 до 20 секунд).
+        test('Negative: typingTime too small (500ms) - Expect 400', async () => {
+            const response = await api.sendMessage(testChatId, "Checking min typingTime", {
+                typingTime: 500
+            });
+            // Если сервер строго следует документации, он вернет 400
+            expect([400, 429]).toContain(response.status);
+        });
+
+        test('Negative: typingTime too large (21000ms) - Expect 400', async () => {
+            const response = await api.sendMessage(testChatId, "Checking max typingTime", {
+                typingTime: 21000
+            });
+            expect([400, 429]).toContain(response.status);
+        });
+
+        test('Positive: typingTime at edge (1000ms) - Expect 200', async () => {
+            const response = await api.sendMessage(testChatId, "Checking edge typingTime", {
+                typingTime: 1000
+            });
+            expect(response.status).toBe(200);
+        });
+
         test('Error: Message exceeds 20000 characters (Status 400)', async () => {
             const response = await api.sendMessage(testChatId, "A".repeat(20001));
             expect(response.status).toBe(400);
