@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:ui": "jest src/tests/ui.test.ts"
   },
   "keywords": [],
   "author": "",
@@ -17,5 +18,8 @@
     "jest": "^30.2.0",
     "ts-jest": "^29.4.6",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "selenium-webdriver": "^4.40.0"
   }
 }
