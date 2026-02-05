@@ -49,6 +49,19 @@ describe('GREEN-API Integration Tests', () => {
             expect(response.status).toBe(200);
         });
 
+        test('Success: Send message with invalid quotedMessageId (Status 200 per docs)', async () => {
+                const invalidQuotedId = "NON_EXISTENT_ID_12345";
+    
+                const response = await api.sendMessage(testChatId, "A message with a citation check", {
+                quotedMessageId: invalidQuotedId
+            });
+
+            expect(response.status).toBe(200);
+            expect(response.data).toHaveProperty('idMessage');
+    
+            console.log('Quoted ID test passed with status 200');
+        });
+
         test('Error: Message exceeds 20000 characters (Status 400)', async () => {
             const response = await api.sendMessage(testChatId, "A".repeat(20001));
             expect(response.status).toBe(400);

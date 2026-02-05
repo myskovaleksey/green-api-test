@@ -20,7 +20,14 @@ export class GreenApiClient {
         return await this.client.get(`/getStateInstance/${this.apiToken}`);
     }
 
-    async sendMessage(chatId: string, message: string, options: { linkPreview?: boolean, typePreview?: string } = {}) {
+    async sendMessage(
+        chatId: string, 
+        message: string, 
+        options: { 
+            linkPreview?: boolean, 
+            typePreview?: string, 
+            quotedMessageId?: string 
+        } = {}) {
         const payload: any = {
             chatId: chatId.includes('@') ? chatId : `${chatId}@c.us`,
             message: message
@@ -28,6 +35,7 @@ export class GreenApiClient {
 
         if (options.linkPreview !== undefined) payload.linkPreview = options.linkPreview;
         if (options.typePreview !== undefined) payload.typePreview = options.typePreview;
+        if (options.quotedMessageId !== undefined) payload.quotedMessageId = options.quotedMessageId;
 
         return await this.client.post(`/sendMessage/${this.apiToken}`, payload);
     }
