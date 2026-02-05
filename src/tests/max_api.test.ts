@@ -99,7 +99,7 @@ describe('GREEN-API Integration Tests', () => {
             expect(response.status).toBe(200);
         });
 
-        test('Negative: Send message to system chat (status@broadcast) - Expect 200 per docs', async () => {
+        test('Negative: Send message to system chat (status@broadcast) - Expect 400 per docs', async () => {
             const systemChatId = "status@broadcast";
             const response = await api.sendMessage(systemChatId, "Test message via Max app check");
 
@@ -132,6 +132,19 @@ describe('GREEN-API Integration Tests', () => {
             const invalidString = Buffer.from([0xFF, 0xFE, 0xFD]).toString('binary');
             const response = await api.sendMessage(testChatId, invalidString);
             expect([200, 400, 413, 429, 500]).toContain(response.status);
+        });
+
+        test('Negative: customPreview without mandatory title - Expect 400', async () => {
+            const response = await api.sendMessage(testChatId, "Checking customPreview validation", {
+                linkPreview: true,
+                customPreview: {
+                    description: "We forgot the title on purpose",
+                    link: "https://green-api.com"
+                }
+            });
+            
+            expect(response.status).toBe(400);
+            console.log('CustomPreview validation status:', response.status);
         });
     });
 

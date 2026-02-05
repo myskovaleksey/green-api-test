@@ -26,7 +26,9 @@ export class GreenApiClient {
         options: { 
             linkPreview?: boolean, 
             typePreview?: string, 
-            quotedMessageId?: string 
+            quotedMessageId?: string,
+            typingTime?: number,
+            customPreview?: object
         } = {}) {
         const payload: any = {
             chatId: chatId.includes('@') ? chatId : `${chatId}@c.us`,
@@ -36,6 +38,8 @@ export class GreenApiClient {
         if (options.linkPreview !== undefined) payload.linkPreview = options.linkPreview;
         if (options.typePreview !== undefined) payload.typePreview = options.typePreview;
         if (options.quotedMessageId !== undefined) payload.quotedMessageId = options.quotedMessageId;
+        if (options.typingTime !== undefined) payload.typingTime = options.typingTime;
+        if (options.customPreview !== undefined) payload.customPreview = options.customPreview;
 
         return await this.client.post(`/sendMessage/${this.apiToken}`, payload);
     }
