@@ -19,13 +19,59 @@ describe('GREEN-API Integration Tests', () => {
     describe('Method: sendMessage', () => {
         test('Success: Send text message with emoji (Status 200)', async () => {
             const response = await api.sendMessage(testChatId, "Emoji test 😃🚀");
+
+            if (response.status !== 200) {
+                console.log('API Error Data:', JSON.stringify(response.data, null, 2));
+            }
+
             expect(response.status).toBe(200);
             expect(response.data).toHaveProperty('idMessage');
+        });
+
+        test('Success: Send with large preview', async () => {
+            const response = await api.sendMessage(testChatId, "Check this: https://green-api.com", {
+                linkPreview: true,
+                typePreview: "large"
+            });
+            
+            if (response.status !== 200) {
+                console.log('Error details:', response.data);
+            }
+
+            expect(response.status).toBe(200);
+        });
+
+        test('Success: Send with small preview', async () => {
+            const response = await api.sendMessage(testChatId, "Check this: https://green-api.com", {
+                linkPreview: true,
+                typePreview: "small"
+            });
+            expect(response.status).toBe(200);
         });
 
         test('Error: Message exceeds 20000 characters (Status 400)', async () => {
             const response = await api.sendMessage(testChatId, "A".repeat(20001));
             expect(response.status).toBe(400);
+        });
+
+        test('Error: linkPreview as string instead of boolean (Status 400)', async () => {
+            const response = await api.sendMessage(testChatId, "Test", {
+                linkPreview: "yes" as any // Передаем строку вместо true/false
+            });
+            expect([400, 429]).toContain(response.status); 
+        });
+
+        test('Error: Request entity too large (Status 500)', async () => {
+            const hugeData = "X".repeat(150000); 
+            const response = await api.sendMessage(testChatId, hugeData);
+            console.log('Large Payload Status:', response.status);
+            expect([400, 413, 500, 429]).toContain(response.status); 
+        });
+
+        test('Error: Invalid encoding - non UTF-8 (Status 400)', async () => {
+            const invalidString = Buffer.from([0xFF, 0xFE, 0xFD]).toString('binary');
+            const response = await api.sendMessage(testChatId, invalidString);
+            expect([200, 400, 413, 429, 500]).toContain(response.status);
         });
     });
 

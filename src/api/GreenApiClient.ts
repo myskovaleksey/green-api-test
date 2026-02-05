@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import options = require('axios');
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -19,11 +20,16 @@ export class GreenApiClient {
         return await this.client.get(`/getStateInstance/${this.apiToken}`);
     }
 
-    async sendMessage(chatId: string, message: string) {
-        return await this.client.post(`/sendMessage/${this.apiToken}`, {
+    async sendMessage(chatId: string, message: string, options: { linkPreview?: boolean, typePreview?: string } = {}) {
+        const payload: any = {
             chatId: chatId.includes('@') ? chatId : `${chatId}@c.us`,
             message: message
-        });
+        };
+
+        if (options.linkPreview !== undefined) payload.linkPreview = options.linkPreview;
+        if (options.typePreview !== undefined) payload.typePreview = options.typePreview;
+
+        return await this.client.post(`/sendMessage/${this.apiToken}`, payload);
     }
 
     async getChatHistory(chatId: string, count: number = 10) {
