@@ -1,0 +1,13 @@
+services:
+  tests:
+    build: .
+    container_name: green_api_runner
+    env_file: .env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: >
+      sh -c "npx jest src/tests/methods/stateInstance.test.ts && 
+             npx jest src/tests/methods/sendMessage.test.ts && 
+             npx jest src/tests/methods/chatHistory.test.ts &&
+             npx jest src/tests/selenium/messageInterface.test.ts"
