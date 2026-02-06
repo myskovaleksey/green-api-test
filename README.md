@@ -39,12 +39,18 @@
 Создайте файл .env в корне проекта и заполните его данными вашего инстанса:
 
 ```
-   API_URL=qpi url из панели
-   MEDIA_URL=qpi url из панели
-   ID_INSTANCE=ваш_id_инстанса
-   API_TOKEN_INSTANCE=ваш_токен_из_панели
-   RECIPIENT_PHONE=79999999999@c.us # JID для отправки сообщений
-   NUMERIC_CHAT_ID=0000000          # ID для работы с историей чата
+  API_URL=qpi url из панели
+  MEDIA_URL=qpi url из панели
+  ID_INSTANCE=ваш_id_инстанса
+  API_TOKEN_INSTANCE=ваш_токен_из_панели
+  RECIPIENT_PHONE=79999999999@c.us # JID для отправки сообщений
+  NUMERIC_CHAT_ID=0000000          # ID для работы с историей чата
+
+  # Системные настройки (Docker/Dev)
+  NODE_ENV=dev
+  NODE_HOST=localhost
+  NODE_PORT=9000
+  NODE_LOCAL=true
 ```
 
 3. **Запуск тестов:**
