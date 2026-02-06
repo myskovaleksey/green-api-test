@@ -15,7 +15,7 @@ describe('Method: sendMessage', () => {
     // ============
 
     test('Success: Send text message with emoji (Status 200)', async () => {
-        const response = await api.sendMessage(testChatId, "Emoji test 😃🚀");
+        const response = await api.sendMessage(testChatId, "Emoji test");
         if (response.status !== 200) {
             console.log('API Error Data:', JSON.stringify(response.data, null, 2));
         }

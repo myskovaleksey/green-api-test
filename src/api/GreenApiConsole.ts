@@ -17,12 +17,23 @@ export class GreenApiConsole {
 
     async openMainPage() {
         if (!this.driver) throw new Error("Driver not initialized");
-        await this.driver.get('https://green-api.com/');
+        await this.driver.get('https://web.max.ru/');
     }
 
     async getTitle() {
         return await this.driver?.getTitle();
     }
+    
+    async getBodyText(className: string) {
+        if (!this.driver) throw new Error("Driver not initialized");
+    
+        const element = await this.driver.wait(
+            until.elementLocated(By.css('body .title')), 
+        10000
+        );
+        return await element.getText();
+    }
+
 
     async close() {
         await this.driver?.quit();

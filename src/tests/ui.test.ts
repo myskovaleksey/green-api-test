@@ -1,6 +1,6 @@
 import { GreenApiConsole } from '../api/GreenApiConsole';
 
-describe('GREEN-API UI Smoke Tests (Selenium)', () => {
+describe('MAX Web UI Smoke Tests', () => {
     let consoleUi: GreenApiConsole;
 
     beforeAll(async () => {
@@ -18,6 +18,12 @@ describe('GREEN-API UI Smoke Tests (Selenium)', () => {
         // console.log('--- DEBUG INFO ---');
         // console.log('Page Title:', title);
         // console.log('------------------');
-        expect(title).toContain('WhatsApp'); 
+        expect(title).toContain('MAX');  
     });
+
+    test('Should find .title class specifically inside body', async () => {
+        await consoleUi.openMainPage();
+        const bodyText = await consoleUi.getBodyText();
+        expect(bodyText.toUpperCase()).toContain('MAX');
+    })
 });
