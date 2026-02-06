@@ -70,4 +70,8 @@ export class GreenApiClient {
     async setSettings(settings: object) {
         return await this.client.post(`/setSettings/${this.apiToken}`, settings);
     }
+
+    // async logout() {
+    //     return await this.client.get(`/waInstance${this.instanceId}/logout/${this.apiToken}`);
+    // }
 }
