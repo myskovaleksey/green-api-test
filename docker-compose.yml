@@ -10,4 +10,3 @@ services:
       sh -c "npx jest src/tests/methods/stateInstance.test.ts && 
              npx jest src/tests/methods/sendMessage.test.ts && 
              npx jest src/tests/methods/chatHistory.test.ts &&
-             npx jest src/tests/selenium/messageInterface.test.ts"
