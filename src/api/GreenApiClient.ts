@@ -1,23 +1,15 @@
-import axios, { AxiosInstance } from 'axios';
-import options = require('axios');
-import dotenv from 'dotenv';
-
-dotenv.config();
+import { apiClient } from './BaseClient';
 
 export class GreenApiClient {
-    private client: AxiosInstance;
     private idInstance = process.env.ID_INSTANCE;
     private apiToken = process.env.API_TOKEN_INSTANCE;
 
-    constructor() {
-        this.client = axios.create({
-            baseURL: `${process.env.API_URL}/waInstance${this.idInstance}`,
-            validateStatus: () => true,
-        });
+    private get urlPrefix() {
+        return `/waInstance${this.idInstance}`;
     }
 
     async getStateInstance() {
-        return await this.client.get(`/getStateInstance/${this.apiToken}`);
+        return await apiClient.get(`${this.urlPrefix}/getStateInstance/${this.apiToken}`);
     }
 
     async sendMessage(
@@ -30,6 +22,7 @@ export class GreenApiClient {
             typingTime?: number,
             customPreview?: object
         } = {}) {
+        
         const payload: any = {
             chatId: chatId.includes('@') ? chatId : `${chatId}@c.us`,
             message: message
@@ -41,15 +34,11 @@ export class GreenApiClient {
         if (options.typingTime !== undefined) payload.typingTime = options.typingTime;
         if (options.customPreview !== undefined) payload.customPreview = options.customPreview;
 
-        return await this.client.post(`/sendMessage/${this.apiToken}`, payload);
+        return await apiClient.post(`${this.urlPrefix}/sendMessage/${this.apiToken}`, payload);
     }
 
     async getChatHistory(chatId: string | number, count: number = 100) {
-        // Приводим к строке, чтобы метод .includes не вызывал ошибку
         const strChatId = String(chatId);
-    
-        // Проверяем: если это не числовой ID (не содержит только цифры) 
-        // и в нем нет @, тогда добавляем @c.us
         let finalChatId = strChatId;
         if (!strChatId.includes('@') && !/^\d+$/.test(strChatId)) {
             finalChatId = `${strChatId}@c.us`;
@@ -60,18 +49,15 @@ export class GreenApiClient {
             count: count
         };
     
-        return await this.client.post(`/getChatHistory/${this.apiToken}`, payload);
+        return await apiClient.post(`${this.urlPrefix}/getChatHistory/${this.apiToken}`, payload);
     }
 
     async getSettings() {
-        return await this.client.get(`/getSettings/${this.apiToken}`);
+        return await apiClient.get(`${this.urlPrefix}/getSettings/${this.apiToken}`);
     }
 
     async setSettings(settings: object) {
-        return await this.client.post(`/setSettings/${this.apiToken}`, settings);
+        return await apiClient.post(`${this.urlPrefix}/setSettings/${this.apiToken}`, settings);
     }
 
-    // async logout() {
-    //     return await this.client.get(`/waInstance${this.instanceId}/logout/${this.apiToken}`);
-    // }
 }

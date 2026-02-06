@@ -1,8 +1,9 @@
 import { GreenApiClient } from '../api/GreenApiClient';
+import { sleep } from '../../api/BaseClient';
 
 const api = new GreenApiClient();
 const testChatId = process.env.RECIPIENT_PHONE || '';
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 
 describe('GREEN-API Integration Tests', () => {
 

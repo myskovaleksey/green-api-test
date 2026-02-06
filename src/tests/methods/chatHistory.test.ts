@@ -1,15 +1,14 @@
 import { GreenApiClient } from '../../api/GreenApiClient';
+import { sleep } from '../../api/BaseClient';
 
 const api = new GreenApiClient();
 const testChatId = process.env.NUMERIC_CHAT_ID || '';
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 describe('Method: getChatHistory - Comprehensive Testing', () => {
 
     beforeEach(async () => {
         await sleep(1000);
     });
-
 
     beforeAll(() => {
         if (!testChatId) {

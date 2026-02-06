@@ -1,7 +1,7 @@
 import { GreenApiClient } from '../../api/GreenApiClient';
+import { sleep } from '../../api/BaseClient';
 
 const api = new GreenApiClient();
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 describe('Method: getStateInstance', () => {
 

@@ -6,7 +6,7 @@ describe('MAX Web UI Smoke Tests', () => {
     beforeAll(async () => {
         consoleUi = new GreenApiConsole();
         await consoleUi.init();
-    }, 20000); // Увеличиваем таймаут до 20 сек для запуска браузера
+    }, 20000); // Увеличиваем до 20 сек
 
     afterAll(async () => {
         await consoleUi.close();
